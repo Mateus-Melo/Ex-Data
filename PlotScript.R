@@ -37,4 +37,18 @@ ggplot(CoalCombustionSources, aes(x=as.character(year))) + geom_col(aes(y=Emissi
         labs(title = "Pollutant Emission From Coal Combustion-Related Sources by Year\n in The USA", x="Year", y="Pollutant Emission")
 dev.off()
 
-EmissionsMotorVehicleBaltimore <- subset(df, grepl())
+
+EmissionsMotorVehicleBaltimore <- subset(df,(grepl("Vehicle",df$SCC.Level.One) | grepl("Vehicle",df$SCC.Level.Two) | grepl("Vehicle",df$SCC.Level.Three) | grepl("Vehicle",df$SCC.Level.Four)) & (df$fips == "24510"))
+png(file="Plot5.png")
+ggplot(EmissionsMotorVehicleBaltimore, aes(x=as.character(year))) + geom_col(aes(y=Emissions)) +
+        labs(title = "Pollutant Emission From Motor Vehicles Sources by Year in Baltimore", x="Year", y="Pollutant Emission")
+dev.off()
+
+
+BaltimoreXLosAngeles <- subset(df,(grepl("Vehicle",df$SCC.Level.One) | grepl("Vehicle",df$SCC.Level.Two) | grepl("Vehicle",df$SCC.Level.Three) | grepl("Vehicle",df$SCC.Level.Four)) & (df$fips == "24510"|df$fips == "06037"))
+png(file="Plot6.png")
+labels <- c("Los Angeles", "Baltimore")
+names(labels)<- c("06037","24510")
+ggplot(BaltimoreXLosAngeles, aes(x=as.character(year))) + facet_wrap(. ~ fips, labeller = labeller(fips=labels)) + geom_col(aes(y=Emissions)) + 
+        labs(title = "Pollutant Emission From Motor Vehicles Sources by Year \n in Baltimore and Los Angeles", x="Year", y="Pollutant Emission")
+dev.off()
